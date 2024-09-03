@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../pkg/logger/Logger.h"
+#include <mutex>
 
 class Server {
 public:
@@ -10,8 +11,8 @@ public:
     ~Server();
 
 private:
-    Logger logger;
+    Logger logger_;
     void handleClient(int client);
     int port_;
-    
+    std::mutex loggerMutex_;
 };

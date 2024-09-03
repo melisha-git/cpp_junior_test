@@ -8,7 +8,7 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
-Server::Server(int port) : port_(port), logger("log.txt") {}
+Server::Server(int port) : port_(port), logger_("log.txt") {}
 
 void Server::start() {
     int server = 0, client = 0;
@@ -58,7 +58,8 @@ void Server::handleClient(int client) {
 
     while ((valread = read(client, buffer, 1024)) > 0) {
         buffer[valread] = '\0';
-        logger.log(buffer);
+        std::lock_guard<std::mutex> lock(loggerMutex_);
+        logger_.log(buffer);
     }
 
     close(client);
